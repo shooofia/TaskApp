@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	// loadEnv()
+	loadEnv()
 	config.ConnectDatabase()
 	e := echo.New()
 	e = route.InitRoute(e)
