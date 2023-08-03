@@ -15,6 +15,7 @@ func main() {
 	e := echo.New()
 	e = route.InitRoute(e)
 	e.Start(getPort())
+
 }
 
 func getPort() string {

@@ -18,8 +18,10 @@ type TaskManager interface {
 	UpdateTaskStatus(id int) error
 	GetTask() ([]Task, error)
 	GetTaskByID(id int) (Task, error)
+	DeleteTaskByID(id int) error
 }
 
+// mengakses data dari database menggunakan GORM
 type TaskRepository struct {
 	DB *gorm.DB
 }
@@ -29,6 +31,7 @@ func (*TaskRepository) GetTask() ([]Task, error) {
 	panic("unimplemented")
 }
 
+// akses database
 func NewTaskManager(DB *gorm.DB) TaskManager {
 	return &TaskRepository{DB: DB}
 }
@@ -58,4 +61,20 @@ func (r *TaskRepository) GetTaskByID(id int) (Task, error) {
 	task := Task{}
 	err := r.DB.First(&task, id).Error
 	return task, err
+}
+
+// DeleteTaskByID menghapus tugas berdasarkan ID dari database.
+func (r *TaskRepository) DeleteTaskByID(id int) error {
+	task := Task{}
+	err := r.DB.First(&task, id).Error
+	if err != nil {
+		return err
+	}
+
+	err = r.DB.Delete(&task).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"strconv"
 
 	"TaskApp/config"
 	"TaskApp/model"
@@ -41,6 +42,37 @@ func GetDetailTaskController(c echo.Context) error {
 		Status:  true,
 		Message: "Berhasil",
 		Data:    task,
+	})
+}
+
+// Fungsi handler untuk menghapus tugas berdasarkan ID
+func DeleteTaskController(c echo.Context) error {
+	// Ambil ID tugas dari URL parameter
+	taskID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, model.Response{
+			Status:  false,
+			Message: "Invalid task ID",
+			Data:    nil,
+		})
+	}
+
+	// Hapus tugas dari sumber data, misalnya dari database
+	err = model.DeleteTaskController(taskID) // Contoh fungsi untuk menghapus data tugas dari database
+
+	if err != nil {
+		// Jika terjadi error saat menghapus tugas
+		return c.JSON(http.StatusInternalServerError, model.Response{
+			Status:  false,
+			Message: "Gagal menghapus tugas dengan ID %d",
+			Data:    nil,
+		})
+	}
+
+	return c.JSON(http.StatusOK, model.Response{
+		Status:  true,
+		Message: "Tugas dengan ID %d berhasil dihapus",
+		Data:    nil,
 	})
 }
 
