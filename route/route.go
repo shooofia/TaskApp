@@ -21,5 +21,6 @@ func InitRoute(e *echo.Echo) *echo.Echo {
 	taskRoute.POST("/task", controller.AddTaskController)
 	taskRoute.GET("/task/:id", controller.GetDetailTaskController)
 	taskRoute.GET("/swagger/*", echoSwagger.WrapHandler)
+	taskRoute.PUT("/task/:id", controller.UpdateTaskController)
 	return e
 }
